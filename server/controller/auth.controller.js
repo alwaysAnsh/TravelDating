@@ -118,7 +118,7 @@ export const signup = async (req, res) => {
         // Create the user
         const user = await User.create({
             firstName: firstName,
-            larstName: larstName,
+            lastName: lastName,
             email,
             password: hashedPassword,
             role,  // This could be either 'creator' or 'joiner'
@@ -129,15 +129,30 @@ export const signup = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: "User registered successfully",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt
-            }
+            user
         });
+
+        // response format
+        // {
+        //     "success": true,
+        //     "message": "User registered successfully",
+        //     "user": {
+        //         "firstName": "kaalu",
+        //         "email": "k@gmail.com",
+        //         "password": "$2a$10$lJHPyo2BInTFcGVtU2wKae9B/2R.uOH.cGAIDhO3JbgaaX8zHnjVS",
+        //         "image": "https://api.dicebear.com/6.x/initials/svg?seed=kaalu%20undefined",
+        //         "role": "creator",
+        //         "createdTrips": [],
+        //         "joinedTrips": [],
+        //         "posts": [],
+        //         "_id": "66c904aa17f0fa45c3cebeda",
+        //         "createdAt": "2024-08-23T21:52:42.577Z",
+        //         "updatedAt": "2024-08-23T21:52:42.577Z",
+        //         "__v": 0
+        //     }
+        // }
+
+
     } catch (error) {
         console.error("Signup error:", error);
         return res.status(500).json({
