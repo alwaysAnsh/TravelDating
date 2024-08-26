@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 const connect = ()=> {
-    mongoose.connect("mongodb+srv://takeme:takemewithyou@clustertakemewithyou.np9jc.mongodb.net/?retryWrites=true&w=majority&appName=ClusterTakemewithyou", {
+    mongoose.connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology : true,
     })

@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import db from './database/database.js'
 import userRoutes from './routes/user.route.js'
+import tripRoutes from './routes/trip.route.js'
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(cors({
 }))
 
 app.use('/api/v1', userRoutes)
+app.use('/api/v1', tripRoutes)
 
 
 app.get('/', (req,res) => res.send("this is homepage for backend server. Hellooooo"))

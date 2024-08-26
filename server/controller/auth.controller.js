@@ -89,7 +89,7 @@ export const signup = async (req, res) => {
         const { firstName, lastName, email, password, confirmPassword, role } = req.body;
 
         // Validation
-        if (!firstName  || !email || !password || !confirmPassword || !role) {
+        if (!firstName  || !email || !password || !confirmPassword ) {
             return res.status(400).json({
                 success: false,
                 message: "Please fill out the necessary fields."
@@ -122,7 +122,7 @@ export const signup = async (req, res) => {
             email,
             password: hashedPassword,
             role,  // This could be either 'creator' or 'joiner'
-            image: `https://api.dicebear.com/6.x/initials/svg?seed=${firstName}%20${lastName}`
+            image: `https://api.dicebear.com/6.x/initials/svg?seed=${firstName}%20${lastName ? lastName : ''}`
         });
 
         // Return response
