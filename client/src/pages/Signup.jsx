@@ -8,16 +8,70 @@ const SignUp = () => {
         firstName: '',
         lastName: '',
         email: '',
+        phone : '',
         password: '',
         confirmPassword: '',
     });
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [verified, setVerified] = useState(false);
     const navigate = useNavigate();
+
+    const handleVerifyClick = async(e) => {
+      e.preventDefault();
+      try {
+        // console.log("check before")
+        const response = await axios.post(`http://localhost:4000/sendotp/91/${formData.phone}`);
+        // console.log("check after")
+        if(response.status !== 200 ){
+          console.log("response error: ", response.status);
+          return;
+        }
+        setIsModalOpen(true);
+      } catch (error) {
+        console.log("something went wrong sending otp: ",error);
+        return;
+      }
+      
+    };
+  
+    const handleOtpChange = (e) => {
+      setOtp(e.target.value);
+    };
+
+    const handleOtpSubmit = async(e) => {
+      console.log("inside handleotpsubmit")
+
+      e.preventDefault();
+      try {
+      console.log("inside handleotpsubmit22")
+
+        const response = await axios.get(`http://localhost:4000/validateOtp/91/${formData.phone}/${otp}`);
+        if(response.status !== 200 ){
+          console.log("response error: ", response.status);
+          return;
+        }
+        console.log("validateddddd")
+
+        setIsModalOpen(false);
+        setVerified(true)
+      } catch (error) {
+        console.log("something went wrong sending otp");
+        return;
+      }
+      
+
+
+      console.log('OTP Submitted:', otp);
+      setIsModalOpen(false);
+    };
 
     const handleOnChange = (e) => {
         setFormData((prevData) => ({
           ...prevData,
           [e.target.name]: e.target.value,
         }))
+        console.log(e.target.value)
       }
     
     const handleSubmit = async (e) => {
@@ -88,6 +142,22 @@ const SignUp = () => {
                     value={formData.email}
                     onChange = {handleOnChange} 
                   />
+                  <input
+                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="tel"
+                    placeholder= "enter your Phone (required)"
+                    required
+                    name='phone'
+                    value={formData.phone}
+                    onChange = {handleOnChange} 
+                  />
+                  {
+                    verified ? (<div className='text-green-500 font-bold ' >verified</div>) : (<button onClick={handleVerifyClick} className='border-2 rounded-md p-2 cursor-pointer'>Verify</button>)
+                  }
+
+                  
+
+                  
                   
                   <input
                     className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
@@ -135,6 +205,30 @@ const SignUp = () => {
             </div>
           </div>
         </div>
+        {/* otp verification modal */}
+        {isModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs w-full">
+            <h2 className="text-xl font-bold mb-4 text-center">Enter OTP</h2>
+            <form onSubmit={handleOtpSubmit}>
+              <input
+                className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                type="text"
+                placeholder="Enter OTP"
+                required
+                value={otp}
+                onChange={handleOtpChange}
+              />
+              <button
+                type="submit"
+                className="mt-4 w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
       </div>
   )
 }
