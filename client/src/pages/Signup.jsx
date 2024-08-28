@@ -40,18 +40,18 @@ const SignUp = () => {
     };
 
     const handleOtpSubmit = async(e) => {
-      console.log("inside handleotpsubmit")
+      
 
       e.preventDefault();
       try {
-      console.log("inside handleotpsubmit22")
+      
 
         const response = await axios.get(`http://localhost:4000/validateOtp/91/${formData.phone}/${otp}`);
         if(response.status !== 200 ){
           console.log("response error: ", response.status);
           return;
         }
-        console.log("validateddddd")
+        
 
         setIsModalOpen(false);
         setVerified(true)
