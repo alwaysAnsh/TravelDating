@@ -4,6 +4,8 @@ import {Routes, Route} from 'react-router-dom'
 import SignUp from './pages/Signup'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Hero from './pages/dashboard/Hero'
+
 
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
         <Route path='/' element = {<Home/>} />
         <Route path='/login' element = {<Login/>} />
         <Route path='/signup' element = {<SignUp/>} />
+        <Route path='/dashboard/:loginId' element = {<Hero/>} />
       </Routes>
     </>
   )

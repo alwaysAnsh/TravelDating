@@ -1,17 +1,18 @@
 import {React, useState} from 'react'
 import axios from 'axios'
 import {useNavigate,Link} from 'react-router-dom'
-// import {useDispatch} from 'react-redux'
-// import { signInSuccess } from '../redux/authSlice'
+import {useDispatch} from 'react-redux'
+import { signInFailure, signInStart, signInSuccess } from '../redux/authSlice'
 
 export const Login = () => {
 
+    
     const [formData, setFormData ] = useState({
         email: '',
         password: '',
     });
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const handleOnChange = (e) => {
         setFormData((prevData) => ({
@@ -22,7 +23,9 @@ export const Login = () => {
 
       const handleOnSubmit = async(e) => {
         e.preventDefault();
+        dispatch(signInStart());
         try {
+
             const response = await axios.post("/api/v1/login", formData);
             if(!response.data.success){
                 console.log("error getting response");
@@ -42,11 +45,13 @@ export const Login = () => {
             //     __v: 0
             //     _id: "66a4eff96c5c9d41d0e60b9d"
             setFormData({});
-            // dispatch(signInSuccess(response.data.user));
+            dispatch(signInSuccess(response.data.user));
             navigate(`/dashboard/${response.data.user._id}`);
             
         } catch (error) {
             console.log("error while signing in : ", error);
+            dispatch(signInFailure());
+            return;
         }
       }
 

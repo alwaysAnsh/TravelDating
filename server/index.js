@@ -33,7 +33,7 @@ const password = "Anshjain@123";
 
 
 
-let verificationStore = {};
+const verificationStore = {};
 
 export const generateAuthToken = async () => {
     const base64String = Buffer.from(password).toString("base64");
