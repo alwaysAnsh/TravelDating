@@ -1,14 +1,51 @@
-import React from 'react';
-import { Link  } from 'react-router-dom';
-import {useSelector} from 'react-redux'
+import {React, useState, useEffect} from 'react';
+import { Link, useNavigate  } from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux'
 import bg from '../../assets/08.jpg'
+import axios from 'axios'
 import '../../App.css'
+import { setToken, setUser } from '../../redux/authSlice';
 
 const Hero = () => {
 
     const { currentUser } = useSelector((state) => state.user);
+    const [data, setData ] = useState({})
+    const token = currentUser.token;
+    console.log("currentuser: ", currentUser)
 
-    // console.log("currentuser: ", currentUser)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const fetchUserTrips = async() => {
+      try {
+        const response = await axios.get(`/api/v1/get-trip/${currentUser._id}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if(response.status != 200 )
+        {
+          console.log("error fetching response ")
+          return;
+        }
+        console.log("response: ", response.data)
+        setData(response.data);
+      } catch (error) {
+        console.log("Some error occured fetching details of all data: ", error);
+        // console.log("error: ", response?.error);
+      }
+    }
+
+    useEffect(() => {
+      fetchUserTrips();
+    }, [])
+
+    const handleLogout = ()=> {
+      dispatch(setToken(null));
+      dispatch(setUser(null));
+      navigate('/login');
+    }
+    
 
   return (
     <div
@@ -37,6 +74,9 @@ const Hero = () => {
               Join a trip
             </button>
           </Link>
+          <button onClick = {handleLogout} className="bg-white hover:bg-red-700 text-black font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+              Logout
+            </button>
         </div>
       </div>
     </div>

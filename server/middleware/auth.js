@@ -8,7 +8,10 @@ dotenv.config();
 export const auth = async(req, res, next ) => {
     try {
         // console.log("iniside auth middleware")
-        const token = req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer ", "");
+        const token = req.body.token || 
+              req.cookies.token || 
+              (req.header("Authorization") && req.header("Authorization").replace("Bearer ", ""));
+
         if(!token)
         {
             //return the response

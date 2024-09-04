@@ -1,9 +1,33 @@
-import React from 'react';
+import {React, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import bg from '../assets/09.jpg'
+import axios from 'axios'
 import '../App.css'
 
 const Home = () => {
+
+  const [data, setData ] = useState({})
+
+  const fetchAllTrips = async() => {
+    try {
+      const response = await axios.get('/api/v1/getAllTrips');
+      if(response.status != 200 )
+      {
+        console.log("error fetching response ")
+        return;
+      }
+      setData(response.data);
+    } catch (error) {
+      console.log("Some error occured fetching details of all data: ", error);
+      console.log("error: ", response?.error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAllTrips();
+  }, [])
+
+
   return (
     <div
       className="bgimage relative h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center"
