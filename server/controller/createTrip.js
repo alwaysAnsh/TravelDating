@@ -36,7 +36,7 @@ export const createTrip = async (req, res) => {
         const pushedTrip = await User.findByIdAndUpdate(creator, {
             $push: { createdTrips: trip._id }
         });
-        console.log("created trip: ", pushedTrip)
+        // console.log("created trip: ", pushedTrip)
 
         // Return the created trip
         return res.status(201).json({

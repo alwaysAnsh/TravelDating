@@ -109,6 +109,9 @@ export const Login = () => {
                 <Link to='/signup' >
                 <a href="#" class="text-xs text-gray-500 uppercase">or sign up</a>
                 </Link>
+                <Link to='/' >
+                <a href="#" class="text-xs text-orange-500 uppercase">back to home</a>
+                </Link>
                 <span class="border-b w-1/5 md:w-1/4"></span>
             </div>
         </div>

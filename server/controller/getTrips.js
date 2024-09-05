@@ -5,7 +5,7 @@ import Trip from '../models/trip.model.js';
 
 export const getTripDetails = async( req, res )=> {
     try {
-        console.log("inside gegt")
+        
         const userId = req.params.id;
         const trips = await Trip.find({creator: userId});
         console.log("trips: ",trips)
