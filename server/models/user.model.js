@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     token : {
         type : String,
     },
+    fcmToken : {
+        type : String,
+    },
     image:{
         type: String,
     },
@@ -34,6 +37,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['creator', 'joiner'],
         required: true,
+        default: 'creator'
     },
     createdTrips: [
         { 

@@ -1,15 +1,18 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import axios from 'axios'
 import {useNavigate,Link} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
-import { signInFailure, signInStart, signInSuccess } from '../redux/authSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import { saveFcmToken, signInFailure, signInStart, signInSuccess } from '../redux/authSlice'
+import { requestFCMToken } from '../firebase'
 
 export const Login = () => {
 
-    
+    const {currentUser} = useSelector((state) => state.user)
+    // console.log("CU: ", currentUser)
+
     const [formData, setFormData ] = useState({
-        email: '',
-        password: '',
+        email: 'k@gmail.com',
+        password: '1111',
     });
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -20,6 +23,95 @@ export const Login = () => {
           [e.target.name]: e.target.value,
         }))
       }
+
+
+    //   const requestPermission = async() => {
+    //     console.log('Requesting permission...');
+        
+    //     // Requesting notification permission from the user
+    //     Notification.requestPermission().then((permission) => {
+    //       if (permission === 'granted') {
+    //         console.log('Notification permission granted.');
+    //         // Now proceed to get the FCM token
+    //         requestFCMToken()
+    //           .then((token) => {
+    //             if (token) {
+    //               // You can dispatch the token to your Redux store or send it to your server
+    //               try {
+    //                 const res = await axios.post(`/api/v1/saveFcmToken/${currentUser._id}`, {token});
+    //                 if(res.status !== 200 ){
+    //                     console.log("bad response from server");
+    //                     return;
+    //                 }
+    //                 console.log('FCM Token updation is success:', token);
+    //                 dispatch(saveFcmToken(token)); // Example if you want to save it in Redux
+    //               } catch (error) {
+    //                 console.log("some error in updating fcm token in dattabase: ", error)
+    //               }
+                  
+
+    //             } else {
+    //               console.log('No FCM Token was retrieved');
+    //             }
+    //           })
+    //           .catch((error) => {
+    //             console.error('Error retrieving FCM token:', error);
+    //           });
+    //       } else {
+    //         console.log('Notification permission denied.');
+    //       }
+    //     }).catch((error) => {
+    //       console.error('Error requesting notification permission:', error);
+    //     });
+    //   };
+
+
+    const requestPermission = async () => {
+        try {
+          console.log('Requesting permission...');
+          
+          // Requesting notification permission from the user
+          const permission = await Notification.requestPermission();
+          
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            
+            // Now proceed to get the FCM token
+            const token = await requestFCMToken();
+            
+            if (token) {
+              try {
+                // console.log("ffccmm: ", token)
+                const res = await axios.post(`/api/v1/saveFcmToken/${currentUser._id}`, { token: token, userId: currentUser._id });
+                
+                if (res.status !== 200) {
+                  console.log("Bad response from server");
+                  return;
+                }
+                console.log("res: ", res)
+                console.log('FCM Token update successful:', token);
+                
+                // Example if you want to save it in Redux
+                dispatch(saveFcmToken(token));
+                
+              } catch (error) {
+                console.log("Error updating FCM token in database:", error);
+              }
+              
+            } else {
+              console.log('No FCM Token was retrieved');
+            }
+            
+          } else {
+            console.log('Notification permission denied.');
+          }
+          
+        } catch (error) {
+          console.error('Error requesting notification permission or retrieving FCM token:', error);
+        }
+      };
+      
+
 
       const handleOnSubmit = async(e) => {
         e.preventDefault();
@@ -46,7 +138,9 @@ export const Login = () => {
             //     _id: "66a4eff96c5c9d41d0e60b9d"
             setFormData({});
             dispatch(signInSuccess(response.data.user));
-            navigate(`/dashboard/${response.data.user._id}`);
+            // requestPermission();
+
+            navigate(`/${response.data.user._id}`);
             
         } catch (error) {
             console.log("error while signing in : ", error);
@@ -54,6 +148,13 @@ export const Login = () => {
             return;
         }
       }
+
+      useEffect(() => {
+        if (currentUser) {
+          
+          requestPermission();
+        }
+      }, [currentUser]);
 
   return (
     <div class="mx-auto py-28 bg-gradient-to-r from-pink-500 to-yellow-500 h-screen">

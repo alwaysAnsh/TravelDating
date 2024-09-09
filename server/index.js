@@ -85,7 +85,7 @@ export const sendOtp = async (authToken, countryCode, mobileNumber) => {
             }
             console.log("Request:", options);
             console.log("Body:", body);
-            verificationId = body.data.verificationId;
+            // verificationId = body.data.verificationId;
             resolve(body);
         });
     });
@@ -125,7 +125,7 @@ app.post("/sendotp/:countryCode/:mobileNumber", async (req, res) => {
         const authToken = await generateAuthToken();
         const body = await sendOtp(authToken, countryCode, mobileNumber);
 
-        if (body.data.responseCode === '200' && body.data.errorMessage === null) {
+        if (body.data.responseCode == 200 && body.data.errorMessage === null) {
             verificationStore[mobileNumber] = body.data.verificationId;
             res.status(200).send("OTP sent successfully!");
         } else {

@@ -5,13 +5,16 @@ import bg from '../../assets/08.jpg'
 import axios from 'axios'
 import '../../App.css'
 import { setToken, setUser } from '../../redux/authSlice';
+import NotificationButton from '../../components/NotificationButton';
+import { requestFCMToken } from '../../firebase';
+import { app } from '../../firebase';
 
 const Hero = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const [data, setData ] = useState({})
     const token = currentUser.token;
-    console.log("currentuser: ", currentUser)
+    // console.log("currentuser: ", currentUser)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -45,6 +48,37 @@ const Hero = () => {
       dispatch(setUser(null));
       navigate('/login');
     }
+
+    //notification enable function
+    const requestPermission = () => {
+      console.log('Requesting permission...');
+      
+      // Requesting notification permission from the user
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Notification permission granted.');
+          // Now proceed to get the FCM token
+          requestFCMToken()
+            .then((token) => {
+              if (token) {
+                // You can dispatch the token to your Redux store or send it to your server
+                console.log('FCM Token:', token);
+                // dispatch(saveFcmToken(token)); // Example if you want to save it in Redux
+              } else {
+                console.log('No FCM Token was retrieved');
+              }
+            })
+            .catch((error) => {
+              console.error('Error retrieving FCM token:', error);
+            });
+        } else {
+          console.log('Notification permission denied.');
+        }
+      }).catch((error) => {
+        console.error('Error requesting notification permission:', error);
+      });
+    };
+    
     
 
   return (
@@ -77,6 +111,10 @@ const Hero = () => {
           <button onClick = {handleLogout} className="bg-white hover:bg-red-700 text-black font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
               Logout
             </button>
+          <button onClick = {requestPermission} className="bg-white hover:bg-red-700 text-black font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+              Enable notification
+            </button>
+            
         </div>
       </div>
     </div>

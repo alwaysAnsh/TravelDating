@@ -8,7 +8,7 @@ const PrivateRoute = () => {
   return (
     <>
         {
-            currentUser? (<Outlet/>) :(<Navigate to={'/signin'}/>)
+            currentUser? (<Outlet/>) :(<Navigate to={'/login'}/>)
         }
     </>
   )

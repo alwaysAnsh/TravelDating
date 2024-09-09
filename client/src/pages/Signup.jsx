@@ -8,9 +8,10 @@ const SignUp = () => {
         firstName: '',
         lastName: '',
         email: '',
-        phone : '',
+        phoneNumber : '',
         password: '',
         confirmPassword: '',
+        role: 'creator'
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [otp, setOtp] = useState('');
@@ -76,6 +77,7 @@ const SignUp = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submitting form data: ", formData);
         try {
             const response = await axios.post("/api/v1/signup", formData);
             if(!response.data.success){
@@ -146,9 +148,9 @@ const SignUp = () => {
                     className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="tel"
                     placeholder= "enter your Phone (required)"
-                    required
-                    name='phone'
-                    value={formData.phone}
+                    // required
+                    name='phoneNumber'
+                    value={formData.phoneNumber}
                     onChange = {handleOnChange} 
                   />
                   {
@@ -175,6 +177,15 @@ const SignUp = () => {
                     required
                     name='confirmPassword'
                     value={formData.confirmPassword}
+                    onChange = {handleOnChange}
+                  />
+                  <input
+                    className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="text"
+                    placeholder= "Role"
+                    required
+                    name='role'
+                    value={formData.role}
                     onChange = {handleOnChange}
                   />
                   <button className="mt-5 tracking-wide font-semibold bg-blue-900 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
