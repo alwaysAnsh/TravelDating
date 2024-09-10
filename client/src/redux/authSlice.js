@@ -51,9 +51,15 @@ const userSlice = createSlice({
         },
         setUser: (state, value) => {
             state.currentUser = value.payload
-        }
+        },
+        saveFcmToken: (state, action) => {
+            state.currentUser = {
+              ...state.currentUser, // keep other user data intact
+              fcmToken: action.payload // store the FCM token
+            };
+          }
     }
 });
 
-export const {signInFailure, signInStart, signInSuccess, updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, setToken, setUser} = userSlice.actions;
+export const {signInFailure, signInStart, signInSuccess, updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, setToken, setUser, saveFcmToken} = userSlice.actions;
 export default userSlice.reducer;
