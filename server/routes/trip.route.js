@@ -5,6 +5,7 @@ import { getTripDetails } from '../controller/getTrips.js';
 import { test } from '../controller/test.js';
 import { getAllTrips } from '../controller/getAllTrips.js';
 import { joinTrip } from '../controller/joinTrip.controller.js';
+import { getJoinRequests } from '../controller/joinRequests.controller.js';
 const router = express.Router();
 
 router.post('/create-trip', auth, createTrip)
@@ -21,5 +22,6 @@ router.get('/getAllTrips', getAllTrips)
 // ***********************************************************************************************
 
 router.post('/join-trip/:userId', auth, joinTrip)
+router.get('/:userId/join-requests', getJoinRequests)
 
 export default router
