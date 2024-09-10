@@ -78,6 +78,8 @@ const Hero = () => {
         console.error('Error requesting notification permission:', error);
       });
     };
+
+    
     
     
 
@@ -114,6 +116,11 @@ const Hero = () => {
           <button onClick = {requestPermission} className="bg-white hover:bg-red-700 text-black font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
               Enable notification
             </button>
+          <Link to={`/dashboard/${currentUser._id}/requests`}>
+          <button  className="bg-yellow-600 hover:bg-black-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+              Joining Requests
+            </button>
+            </Link>
             
         </div>
       </div>
