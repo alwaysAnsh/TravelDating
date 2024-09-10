@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
+import { messaging } from '../firebase';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+
 
 const TripCard = ({ title, source, destination, dates, itinerary, budget, participants, createdAt, creatorId, creatorEmail, creator, tripId }) => {
 
@@ -38,14 +41,15 @@ const TripCard = ({ title, source, destination, dates, itinerary, budget, partic
                 const response = await axios.post(`/api/v1/join-trip/${userId}`, {tripId: tripId, token: token, userId: userId })
                 if(response.status != 200 )
                 {
-                    console.log("error joining trip, server responded with bad status")
+                    console.log("error joining trip, server responded with bad status: ",response.data.message)
                     return;
                 }
                 console.log("request for join sent successfull");
+                alert("message join req sent")
                 navigate('/joined');
             }
         } catch (error) {
-            console.log('Somethign went wrong joining trip: ', error)
+            console.log('Somethign went wrong joining trip: ', error.response.data.message)
         }
     }
 
@@ -85,6 +89,9 @@ const TripCard = ({ title, source, destination, dates, itinerary, budget, partic
                 </p>
                 <p className="text-blue-700 text-base mb-2">
                     <strong>Email:</strong> {creatorEmail}
+                </p>
+                <p className="text-white bg-black p-2 text-base mb-2">
+                    <strong>tripId:</strong> {tripId}
                 </p>
                 {
                     creatorId === userId ? (<button disable onClick = {AlertUnableToJoin} className="bg-gray-600 hover:bg-gray-400 text-white

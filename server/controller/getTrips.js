@@ -8,7 +8,7 @@ export const getTripDetails = async( req, res )=> {
         
         const userId = req.params.id;
         const trips = await Trip.find({creator: userId});
-        console.log("trips: ",trips)
+        // console.log("trips: ",trips)
         if (!trips || trips.length === 0) {
             return res.status(404).json({
                 success: false,

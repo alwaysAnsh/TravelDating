@@ -86,10 +86,10 @@ export const login = async(req, res) => {
 
 export const signup = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, confirmPassword, phoneNumber } = req.body;
+        const { firstName, lastName, email, password, confirmPassword, phoneNumber, role } = req.body;
 
         // Validation
-        if (!firstName  || !email || !password || !confirmPassword || phoneNumber ) {
+        if (!firstName  || !email || !password || !confirmPassword  ) {
             return res.status(400).json({
                 success: false,
                 message: "Please fill out the necessary fields."
@@ -162,4 +162,52 @@ export const signup = async (req, res) => {
         });
     }
 };
+
+
+export const saveFcmToken = async (req, res) => {
+    try {
+      
+    
+      
+      
+      const { token, userId } = req.body;
+    //   const {userId} = req.params.id;
+      
+    //   console.log("Received token: ", token);
+    //   console.log("Received userId: ", userId);
+  
+      if (!token) {
+        console.log("Error: Token is missing");
+        return res.status(400).json({
+          success: false,
+          message: "FCM token not found, please generate one and try again"
+        });
+      }
+  
+      
+      const user = await User.findByIdAndUpdate(userId, { fcmToken: token }, { new: true });
+      
+      
+    //   console.log("User after update: ", user);
+  
+      if (!user) {
+        console.log("Error: User not found");
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+  
+     
+      res.status(200).json({ success: true, message: 'FCM token updated successfully' });
+      
+    } catch (error) {
+      
+      console.error('Error in saveFcmToken:', error.message || error);
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong updating FCM token in user DB",
+        error: error.message || error
+      });
+    }
+  }
+  
+
     

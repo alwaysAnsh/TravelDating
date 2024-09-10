@@ -4,11 +4,11 @@ import Trip from '../models/trip.model.js'
 
 export const getAllTrips = async (req, res) => {
     try {
-        // Find all trips in the database
+        
         // console.log("inside getalltrips api")
-        const trips = await Trip.find();
+        const trips = await Trip.find().populate('creator');
 
-        // Check if any trips exist
+        
         if (!trips || trips.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -16,7 +16,7 @@ export const getAllTrips = async (req, res) => {
             });
         }
 
-        // Return the list of all trips
+        
         res.status(200).json({
             success: true,
             message: "All trips fetched successfully!",
