@@ -1,4 +1,8 @@
-import {React, useState, useEffect } from 'react';
+import {React, useState, useEffect, useRef } from 'react';
+
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import imagesLoaded from 'imagesloaded';
 import { Link, useNavigate } from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux'
 import bg from '../assets/09.jpg'
@@ -6,6 +10,9 @@ import axios from 'axios'
 import '../App.css'
 import TripCard from '../components/TripCard';
 import { setToken, setUser } from '../redux/authSlice';
+import mouse from '../assets/mouse.gif'
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
 
@@ -13,6 +20,9 @@ const Home = () => {
   const {currentUser} = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const loaderRef = useRef(null);
+  const demoWrapperRef = useRef(null);
 
   const fetchAllTrips = async() => {
     try {
@@ -42,25 +52,139 @@ const Home = () => {
 
   useEffect(() => {
     fetchAllTrips();
+    const images = gsap.utils.toArray('img');
+    const loader = loaderRef.current;
+    const updateProgress = (instance) => {
+      
+      const progress = Math.round((instance.progressedCount * 100) / images.length);
+
+      loader.textContent = `${progress}%`;
+      if (progress === 100) {
+        
+        gsap.to(loader, { autoAlpha: 0, duration: 0.5 }); 
+      }
+    };
+
+    const showDemo = () => {
+      document.body.style.overflow = 'auto';
+      document.scrollingElement.scrollTo(0, 0);
+      gsap.to(loader.parentElement, { autoAlpha: 1 });
+
+      gsap.utils.toArray('section').forEach((section, index) => {
+        const w = section.querySelector('.wrapper');
+        const [x, xEnd] = (index % 2) ? ['100%', (w.scrollWidth - section.offsetWidth) * -1] : [w.scrollWidth * -1, 0];
+        gsap.fromTo(w, { x }, {
+          x: xEnd,
+          scrollTrigger: {
+            trigger: section,
+            
+            scrub: 1
+          }
+        });
+      });
+    };
+
+    imagesLoaded(images).on('progress', updateProgress).on('always', showDemo);
   }, [])
 
 
   return (
-    <div
+    <div className=" bg-white sm:text-sm">
+      <div ref={loaderRef} className="loader  inset-0 bg-black text-white flex items-center justify-center">
+        <div>
+          <h1 className="text-5xl">Loading</h1>
+          <h2 ref={loaderRef} className="loader--text text-2xl">0%</h2>
+        </div>
+      </div>
+      <div ref={demoWrapperRef} className=" demo-wrapper overflow-x-hidden bg-white">
+        <header className="h-screen flex items-center justify-center">
+          <div className='flex flex-col justify-center items-center gap-3'>
+            <h1 className="text-5xl">Scroll Down</h1>
+            {/* <h2 className="text-2xl">demo</h2> */}
+            <img className='w-10' src={mouse}></img>
+          </div>
+        </header>
+        <section className="demo-text">
+          <div className="wrapper  text text-[clamp(8rem,15vw,16rem)] leading-none text-black">
+            <span className='text-black' >TAKE</span>
+            <span className='text-slate-600' >ME</span>
+            <span className='text-black'>WITH</span>
+            <span className='text-slate-600'>YOU</span>
+          </div>
+        </section>
+        {/* {renderGallerySections()} */}
+        <section className="demo-text">
+          <div className="wrapper text-[clamp(8rem,15vw,16rem)] leading-none text-black">
+          <span className='text-slate-600' >TAKE</span>
+            <span className='text-black' >ME</span>
+            <span className='text-slate-600'>WITH</span>
+            <span className='text-black'>YOU</span>
+          </div>
+        </section>
+        <footer className="h-[50vh] flex items-center justify-center">
+            {
+                currentUser == null && <div className='flex flex-row gap-3 items-center justify-center' >
+                    <Link to='/signup'>
+                        <button>
+                            <span className='box'>Sign up</span>
+                        </button>
+                    </Link>
+                    <Link to='/login'>
+                        <button>
+                            <span className='box'>Login</span>
+                        </button>
+                    </Link>
+                </div>
+            }
+        </footer>
+      </div>
+      {/* <img src={person} alt="alternate" /> */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                
+
+                    {data.map((trip, index) => (
+                        <TripCard
+                            key={trip._id || index} 
+                            title={trip.title}
+                            source={trip.source}
+                            destination={trip.destination}
+                            dates={trip.dates}
+                            itinerary={trip.itinerary}
+                            budget={trip.budget}
+                            participants={trip.participants}
+                            createdAt={trip.createdAt}
+                            creator={trip.creator?.firstName} 
+                            creatorId={trip.creator?._id}
+                            creatorEmail={trip.creator?.email} 
+                            tripId={trip._id}
+                        />
+                    ))}
+
+            </div>
+
+    </div>
+);
+};
+
+
+export default Home;
+
+
+{/* <div
         className="relative bgimage h-screen w-screen flex flex-col  bg-cover bg-center"
         
     >
-        {/* Dark overlay to make text stand out */}
+       
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        {/* Content of the homepage */}
+       
         <div className="relative z-10 text-center text-white px-6">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">TakemewithYou</h1>
             <p className="text-lg md:text-xl mb-8">
                 Discover your next adventure with us. Sign up now and start exploring!
             </p>
 
-            {/* Buttons for Sign Up and Login */}
+            
             {
                 currentUser == null && <div className="flex justify-center space-x-4 mb-8">
                 <Link to="/signup">
@@ -94,27 +218,14 @@ const Home = () => {
             }
         </div>
 
-        {/* Display trips */}
+        
         <div className="absolute bottom-0 left-0 right-0 top-[20%] overflow-y-auto p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {/* {Object.keys(data).map((key) => (
-                    <TripCard
-                        key={key}
-                        title={data[key].title}
-                        source={data[key].source}
-                        destination={data[key].destination}
-                        dates={data[key].dates}
-                        itinerary={data[key].itinerary}
-                        budget={data[key].budget}
-                        participants={data[key].participants}
-                        createdAt={data[key].createdAt}
-                        creator={data[key].creator}
-                    />
-                ))} */}
+                
 
                     {data.map((trip, index) => (
                         <TripCard
-                            key={trip._id || index} // Preferably use trip._id as a key if available
+                            key={trip._id || index} 
                             title={trip.title}
                             source={trip.source}
                             destination={trip.destination}
@@ -123,18 +234,13 @@ const Home = () => {
                             budget={trip.budget}
                             participants={trip.participants}
                             createdAt={trip.createdAt}
-                            creator={trip.creator?.firstName} // Accessing the creator's name safely
+                            creator={trip.creator?.firstName} 
                             creatorId={trip.creator?._id}
-                            creatorEmail={trip.creator?.email} // Accessing the creator's email
+                            creatorEmail={trip.creator?.email} 
                             tripId={trip._id}
                         />
                     ))}
 
             </div>
         </div>
-    </div>
-);
-};
-
-
-export default Home;
+    </div> */}
