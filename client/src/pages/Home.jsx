@@ -11,6 +11,8 @@ import '../App.css'
 import TripCard from '../components/TripCard';
 import { setToken, setUser } from '../redux/authSlice';
 import mouse from '../assets/mouse.gif'
+import bike from '../assets/bike.jpg'
+import kiss from '../assets/kiss.jpg'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -89,23 +91,23 @@ const Home = () => {
 
 
   return (
-    <div className=" bg-white sm:text-sm">
+    <div className=" bg-yellowAccent sm:text-sm border-2 ">
       <div ref={loaderRef} className="loader  inset-0 bg-black text-white flex items-center justify-center">
         <div>
           <h1 className="text-5xl">Loading</h1>
           <h2 ref={loaderRef} className="loader--text text-2xl">0%</h2>
         </div>
       </div>
-      <div ref={demoWrapperRef} className=" demo-wrapper overflow-x-hidden bg-white">
+      <div ref={demoWrapperRef} className=" demo-wrapper overflow-x-hidden bg-yellowAccent">
         <header className="h-screen flex items-center justify-center">
           <div className='flex flex-col justify-center items-center gap-3'>
-            <h1 className="text-5xl">Scroll Down</h1>
+            <h1 className="text-5xl font-playfair">Scroll Down</h1>
             {/* <h2 className="text-2xl">demo</h2> */}
             <img className='w-10' src={mouse}></img>
           </div>
         </header>
         <section className="demo-text">
-          <div className="wrapper  text text-[clamp(8rem,15vw,16rem)] leading-none text-black">
+          <div className="wrapper  text text-[clamp(8rem,15vw,16rem)] leading-none text-black font-playfair">
             <span className='text-black' >TAKE</span>
             <span className='text-slate-600' >ME</span>
             <span className='text-black'>WITH</span>
@@ -114,8 +116,8 @@ const Home = () => {
         </section>
         {/* {renderGallerySections()} */}
         <section className="demo-text">
-          <div className="wrapper text-[clamp(8rem,15vw,16rem)] leading-none text-black">
-          <span className='text-slate-600' >TAKE</span>
+          <div className="wrapper text-[clamp(8rem,15vw,16rem)] leading-none text-black font-playfair">
+          <span className='text-slate-600 font-playfair' >TAKE</span>
             <span className='text-black' >ME</span>
             <span className='text-slate-600'>WITH</span>
             <span className='text-black'>YOU</span>
@@ -139,7 +141,54 @@ const Home = () => {
         </footer>
       </div>
       {/* <img src={person} alt="alternate" /> */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {/* what is TakemewithYou */}
+      <h2 className='text-6xl text-right -mt-10 font-playfair bg-black text-white  p-10' >We are the "Angels" for you :)</h2>
+        <div className='flex justify-evenly h-full  items-center bg-offWhite  '>
+          <div className='flex flex-col gap-4 ml-2 w-[40%]'>
+            
+            <div className='p-3 bg-offWhite font-playfair w-[100%]  ' > <span className='font-playfair text-6xl italic'>TakemewithYou </span >is a Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident tenetur aliquid quasi facere illo, reprehenderit pariatur unde, fuga iusto, neque impedit. Quo, tempore nesciunt. Quisquam amet ducimus facere illum omnis quaerat blanditiis officiis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia.iciis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia. FIND YOUR SPARK !!
+            
+            </div>
+            <div>
+              <button class="button">
+              Get Started
+                  <span class="button-span"> ─ it's free</span>
+              </button>
+            </div>
+            
+          </div>
+        
+          <div className='bg-black w-[60%]'>
+            <img  src={bike} alt="a image of group of friends on a trip" loading = 'lazy' />
+          </div>
+        </div>
+      <h2 className='text-6xl text-left  font-playfair bg-black text-offWhite  p-10' >Find your next Spark ;)</h2>
+        <div className='flex flex-row-reverse justify-evenly h-full  items-center bg-secondaryRed  '>
+          <div className='flex flex-col gap-4 ml-2 w-[40%]'>
+            
+            <div className='p-3  font-playfair w-[100%] text-offWhite ' > <span className='font-playfair text-6xl italic'>TakemewithYou </span >is a Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident tenetur aliquid quasi facere illo, reprehenderit pariatur unde, fuga iusto, neque impedit. Quo, tempore nesciunt. Quisquam amet ducimus facere illum omnis quaerat blanditiis officiis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia.iciis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia. FIND YOUR SPARK !!
+            
+            </div>
+            <div>
+              <button class="button">
+              Get Started
+                  <span class="button-span"> ─ it's free</span>
+              </button>
+            </div>
+            
+          </div>
+        
+          <div className='bg-black w-[60%]'>
+            <img  src={kiss} alt="a image of group of friends on a trip" loading = 'lazy' />
+          </div>
+        </div>
+
+        {/* section-3 Trip cards display */}
+
+        
+        
+      
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 
 
                     {data.map((trip, index) => (
@@ -160,7 +209,33 @@ const Home = () => {
                         />
                     ))}
 
-            </div>
+            </div> */}
+
+<div class="overflow-hidden relative w-[90%] mx-auto cards">
+ 
+  <div class="flex items-center justify-start space-x-6 w-full animate-scroll">
+    {data.concat(data).map((trip, index) => (
+      <div key={trip._id || index} class="flex-shrink-0 w-64">
+        <TripCard
+          title={trip.title}
+          source={trip.source}
+          destination={trip.destination}
+          dates={trip.dates}
+          itinerary={trip.itinerary}
+          budget={trip.budget}
+          participants={trip.participants}
+          createdAt={trip.createdAt}
+          creator={trip.creator?.firstName}
+          creatorId={trip.creator?._id}
+          creatorEmail={trip.creator?.email}
+          tripId={trip._id}
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+
 
     </div>
 );
