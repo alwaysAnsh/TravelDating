@@ -84,7 +84,7 @@ button {
 
 /* button 2 start */
 
-/* From Uiverse.io by McHaXYT */ 
+
 .button {
   padding: 15px 20px;
   border: none;
@@ -125,9 +125,6 @@ button {
 }
 
 /* Not found page css */
-
-/* From Uiverse.io by Praashoo7 */ 
-/* Design Inspired by one of Stefan Devai's Design on Dribble */
 
 .main_wrapper {
   display: flex;
@@ -572,4 +569,3 @@ button {
 .text_4043 {
   transform: scaleY(24.5) scaleX(9);
 }
-

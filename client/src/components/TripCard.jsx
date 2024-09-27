@@ -39,7 +39,7 @@ const TripCard = ({ title, source, destination, dates, itinerary, budget, partic
             }
             else{
                 const response = await axios.post(`/api/v1/join-trip/${userId}`, {tripId: tripId, token: token, userId: userId })
-                if(response.status != 200 )
+                if(response.success == false )
                 {
                     console.log("error joining trip, server responded with bad status: ",response.data.message)
                     return;
@@ -59,52 +59,71 @@ const TripCard = ({ title, source, destination, dates, itinerary, budget, partic
 
 
     return (
-        <div className="max-w-sm rounded overflow-hidden flex flex-row  shadow-lg bg-gradient-to-r from-orange-100 to-cyan-400 text-black">
-            <div className="px-6 py-4">
-                
-                <h2 className="text-xl font-bold mb-2">{title}</h2>
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Source:</strong> {source}
-                </p>
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Destination:</strong> {destination}
-                </p>
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Dates:</strong> {new Date(dates.start).toLocaleDateString()} - {new Date(dates.end).toLocaleDateString()}
-                </p>
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Itinerary:</strong> {itinerary}
-                </p>
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Budget:</strong> ${budget}
-                </p>
-                {/* <p className="text-gray-700 text-base mb-2">
-                    <strong>Participants:</strong> {participants.join(', ')}
-                </p> */}
-                <p className="text-gray-700 text-base mb-2">
-                    <strong>Created At:</strong> {new Date(createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-pink-700 text-base mb-2">
-                    <strong>Creator:</strong> {creator}
-                </p>
-                <p className="text-blue-700 text-base mb-2">
-                    <strong>Email:</strong> {creatorEmail}
-                </p>
-                <p className="text-white bg-black p-2 text-base mb-2">
-                    <strong>tripId:</strong> {tripId}
-                </p>
-                {
-                    creatorId === userId ? (<button disable onClick = {AlertUnableToJoin} className="bg-gray-600 hover:bg-gray-400 text-white
-                        font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
-                                               created by you
-                                           </button>) : (<button onClick = {joinTripApi} className="bg-purple-600 hover:bg-purple-700 text-white
- font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
-                        Join this trip
-                    </button>)
-                }
+        <div className = 'box  w-[260px] overflow-y-auto flex flex-col bg-transparent'>
+            <div>
+                <img className='object-cover w-[100%] h-[160px]  ' src="https://images.unsplash.com/photo-1488161628813-04466f872be2?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYyMzMxNTMwNQ&ixlib=rb-1.2.1&q=85" alt="imagae of a traveller" />
+            </div>
+            <div className='flex flex-col gap-3 '>
+                <p className='font-playfair text-black text-xl' >{creator}</p>
+                <span className='font-playfair italic text-gray-500 text-sm' >{creatorEmail}</span>
+            </div>
+            <div>
+                <p className='text-black text-md italic  normal-case' >{creator} has planned the trip from {source} to {destination}. Then after this, write some information about the creator that you must have taken while they created their profile. This stuff must not be so long in order to maintain the size and figure of the card. </p>
+            </div>
+            <div className='mt-2'>
+                <button className='cursor-pointer p-2 text-center bg-secondaryRed font-serif ' >
+                    Explore more
+                </button>
             </div>
         </div>
     );
 };
 
 export default TripCard;
+
+//         <div className="max-w-sm rounded overflow-hidden flex flex-row  shadow-lg bg-gradient-to-r from-orange-100 to-cyan-400 text-black">
+//         <div className="px-6 py-4">
+            
+//             <h2 className="text-xl font-bold mb-2">{title}</h2>
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Source:</strong> {source}
+//             </p>
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Destination:</strong> {destination}
+//             </p>
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Dates:</strong> {new Date(dates.start).toLocaleDateString()} - {new Date(dates.end).toLocaleDateString()}
+//             </p>
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Itinerary:</strong> {itinerary}
+//             </p>
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Budget:</strong> ${budget}
+//             </p>
+            
+//             <p className="text-gray-700 text-base mb-2">
+//                 <strong>Created At:</strong> {new Date(createdAt).toLocaleDateString()}
+//             </p>
+//             <p className="text-pink-700 text-base mb-2">
+//                 <strong>Creator:</strong> {creator}
+//             </p>
+//             <p className="text-blue-700 text-base mb-2">
+//                 <strong>Email:</strong> {creatorEmail}
+//             </p>
+//             <p className="text-white bg-black p-2 text-base mb-2">
+//                 <strong>tripId:</strong> {tripId}
+//             </p>
+//             {
+//                 creatorId === userId ? (<button disable onClick = {AlertUnableToJoin} className="bg-gray-600 hover:bg-gray-400 text-white
+//                     font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+//                                            created by you
+//                                        </button>) : (<button onClick = {joinTripApi} className="bg-purple-600 hover:bg-purple-700 text-white
+// font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+//                     Join this trip
+//                 </button>)
+//             }
+//         </div>
+//     </div> 
+        
+
+

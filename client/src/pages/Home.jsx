@@ -13,6 +13,7 @@ import { setToken, setUser } from '../redux/authSlice';
 import mouse from '../assets/mouse.gif'
 import bike from '../assets/bike.jpg'
 import kiss from '../assets/kiss.jpg'
+import Footer from '../components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,11 +92,11 @@ const Home = () => {
 
 
   return (
-    <div className=" bg-yellowAccent sm:text-sm border-2 ">
+    <div className=" bg-offWhite sm:text-sm  ">
       <div ref={loaderRef} className="loader  inset-0 bg-black text-white flex items-center justify-center">
         <div>
           <h1 className="text-5xl">Loading</h1>
-          <h2 ref={loaderRef} className="loader--text text-2xl">0%</h2>
+          <h2 ref={loaderRef} className="loader--text text-2xl bg-yellowAccent">0%</h2>
         </div>
       </div>
       <div ref={demoWrapperRef} className=" demo-wrapper overflow-x-hidden bg-yellowAccent">
@@ -142,7 +143,7 @@ const Home = () => {
       </div>
       {/* <img src={person} alt="alternate" /> */}
       {/* what is TakemewithYou */}
-      <h2 className='text-6xl text-right -mt-10 font-playfair bg-black text-white  p-10' >We are the "Angels" for you :)</h2>
+      <h2 className='text-6xl text-right -mt-10 font-playfair bg-black text-offWhite  p-10' >We are the "Angels" for you :)</h2>
         <div className='flex justify-evenly h-full  items-center bg-offWhite  '>
           <div className='flex flex-col gap-4 ml-2 w-[40%]'>
             
@@ -183,6 +184,29 @@ const Home = () => {
           </div>
         </div>
 
+        <h2 className='text-6xl text-right  font-playfair bg-black text-offWhite  p-10' >Another section</h2>
+        <div className='flex flex-row justify-evenly h-full  items-center bg-offWhite  '>
+          <div className='flex flex-col gap-4 ml-2 w-[40%]'>
+            
+            <div className='p-3  font-playfair w-[100%] text-black ' > <span className='font-playfair text-6xl italic'>TakemewithYou </span >is a Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident tenetur aliquid quasi facere illo, reprehenderit pariatur unde, fuga iusto, neque impedit. Quo, tempore nesciunt. Quisquam amet ducimus facere illum omnis quaerat blanditiis officiis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia.iciis, delectus voluptate vitae iusto nemo provident assumenda eius error molestias excepturi mollitia. FIND YOUR SPARK !!
+            
+            </div>
+            <div>
+              <button class="button">
+              Get Started
+                  <span class="button-span"> ─ it's free</span>
+              </button>
+            </div>
+            
+          </div>
+        
+          <div className='bg-black w-[60%]'>
+            <img  src={bike} alt="a image of group of friends on a trip" loading = 'lazy' />
+          </div>
+        </div>
+
+        
+
         {/* section-3 Trip cards display */}
 
         
@@ -210,12 +234,14 @@ const Home = () => {
                     ))}
 
             </div> */}
+<h2 className='text-6xl text-left  font-playfair bg-black text-offWhite  p-10' >Cards section</h2>
 
-<div class="overflow-hidden relative w-[90%] mx-auto cards">
+<div class="overflow-x-hidden relative w-[90%] mb-11 mt-11   h-auto mx-auto cards">
+<div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-offWhite to-transparent z-10"></div>
  
-  <div class="flex items-center justify-start space-x-6 w-full animate-scroll">
+  <div class="flex items-center justify-start space-x-6  h-auto w-full animate-scroll">
     {data.concat(data).map((trip, index) => (
-      <div key={trip._id || index} class="flex-shrink-0 w-64">
+      <div key={trip._id || index} class="flex-shrink-0   ">
         <TripCard
           title={trip.title}
           source={trip.source}
@@ -233,9 +259,10 @@ const Home = () => {
       </div>
     ))}
   </div>
+    <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-offWhite to-transparent z-10"></div>
 </div>
 
-
+    <Footer/>
 
     </div>
 );
