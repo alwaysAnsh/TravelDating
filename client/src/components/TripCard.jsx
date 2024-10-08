@@ -59,16 +59,16 @@ const TripCard = ({ title, source, destination, dates, itinerary, budget, partic
 
 
     return (
-        <div className = 'box  w-[260px] overflow-y-auto flex flex-col bg-transparent'>
+        <div className = 'box border-2 w-[300px] overflow-y-auto flex flex-col bg-transparent'>
             <div>
-                <img className='object-cover w-[100%] h-[160px]  ' src="https://images.unsplash.com/photo-1488161628813-04466f872be2?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYyMzMxNTMwNQ&ixlib=rb-1.2.1&q=85" alt="imagae of a traveller" />
+                <img className='object-cover w-[100%] h-[180px]  ' src="https://images.unsplash.com/photo-1488161628813-04466f872be2?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYyMzMxNTMwNQ&ixlib=rb-1.2.1&q=85" alt="imagae of a traveller" />
             </div>
-            <div className='flex flex-col gap-3 '>
-                <p className='font-playfair text-black text-xl' >{creator}</p>
-                <span className='font-playfair italic text-gray-500 text-sm' >{creatorEmail}</span>
+            <div className='flex flex-col gap-1 '>
+                <p className='font-playfair text-black text-xl font-normal' >{creator}</p>
+                <span className='font-playfair font-normal normal-case italic text-gray-500 text-sm' >{creatorEmail}</span>
             </div>
             <div>
-                <p className='text-black text-md italic  normal-case' >{creator} has planned the trip from {source} to {destination}. Then after this, write some information about the creator that you must have taken while they created their profile. This stuff must not be so long in order to maintain the size and figure of the card. </p>
+                <p className='text-black text-left font-normal text-md italic  normal-case' >{creator} has planned the trip from {source} to {destination}. Then after this, write some information about the creator that you must have taken while they created their profile. This stuff must not be so long in order to maintain the size and figure of the card. </p>
             </div>
             <div className='mt-2'>
                 <button className='cursor-pointer p-2 text-center bg-secondaryRed font-serif ' >

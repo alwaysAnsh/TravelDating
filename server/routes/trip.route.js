@@ -6,12 +6,14 @@ import { test } from '../controller/test.js';
 import { getAllTrips } from '../controller/getAllTrips.js';
 import { joinTrip } from '../controller/joinTrip.controller.js';
 import { getJoinRequests } from '../controller/joinRequests.controller.js';
+import { deleteTrip } from '../controller/Trips/delete.controller.js';
 const router = express.Router();
 
 router.post('/create-trip', auth, createTrip)
 router.post('/test', auth, test)
 router.get('/get-trip/:id', getTripDetails)
 router.get('/getAllTrips', getAllTrips)
+router.delete('/delete-trip', auth, deleteTrip)
 
 // ***********************************************************************************************
 // ***********************************************************************************************
