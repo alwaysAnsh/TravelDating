@@ -10,6 +10,7 @@ import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/NotFound'
 import Joined from './components/Joined'
 import JoinRequests from './pages/trips/JoinRequests'
+import Test from './pages/Test'
 
 
 if ('serviceWorker' in navigator) {
@@ -35,6 +36,7 @@ function App() {
         <Route path='/' element = {<Home/>} />
         <Route path='/login' element = {<Login/>} />
         <Route path='/signup' element = {<SignUp/>} />
+        <Route path='/test' element = {<Test/>} />
         <Route element={<PrivateRoute/>} >
           <Route path='/:loginId' element = {<Home/>} />
           <Route path='/dashboard/:loginId' element = {<Hero/>} />
